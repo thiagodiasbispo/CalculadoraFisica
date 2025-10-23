@@ -1,20 +1,20 @@
 import streamlit as st
-
+from .comum import parse_optional_float
 
 # --- Funções de cálculo (regras da física) ---
-def calc_power_from_v_i(V: float, I: float) -> float:
-    """Potência P = V * I"""
-    return V * I
+def calc_power_from_v_i(v: float, i: float) -> float:
+    """Potência P = v * i"""
+    return v * i
 
 
-def calc_power_from_i_r(I: float, R: float) -> float:
-    """Potência P = I^2 * R"""
-    return (I ** 2) * R
+def calc_power_from_i_r(i: float, r: float) -> float:
+    """Potência P = i^2 * r"""
+    return (i ** 2) * r
 
 
-def calc_power_from_v_r(V: float, R: float) -> float:
-    """Potência P = V^2 / R"""
-    return (V ** 2) / R
+def calc_power_from_v_r(v: float, r: float) -> float:
+    """Potência P = v^2 / r"""
+    return (v ** 2) / r
 
 
 def compute_power(V, I, R):
@@ -67,32 +67,19 @@ def render_watts():
     with right:
         st.header("Entradas (deixe em branco se desconhecido)")
 
-        # Permitir entradas vazias para que o cálculo só ocorra quando variáveis necessárias estiverem preenchidas
-        def parse_optional_float(label, key, help_text=""):
-            txt = st.text_input(label=label, key=key, help=help_text)
-            txt = txt.strip()
-            if txt == "":
-                return None
-            try:
-                val = float(txt.replace(",", "."))
-                return val
-            except Exception:
-                st.error(f"Entrada inválida em '{label}': insira um número (use '.' ou ',' como separador decimal).")
-                return None
+        v = parse_optional_float("Voltagem V (V)", key="v_voltage", help_text="Ex: 12, 230")
+        i = parse_optional_float("Corrente I (A)", key="i_current", help_text="Ex: 1.5")
+        r = parse_optional_float("Resistência R (Ω)", key="r_resistance", help_text="Ex: 100")
 
-        V = parse_optional_float("Voltagem V (V)", key="v_voltage", help_text="Ex: 12, 230")
-        I = parse_optional_float("Corrente I (A)", key="i_current", help_text="Ex: 1.5")
-        R = parse_optional_float("Resistência R (Ω)", key="r_resistance", help_text="Ex: 100")
-
-        P_value, method = compute_power(V, I, R)
+        p_value, method = compute_power(v, i, r)
 
         st.markdown("---")
-        if P_value is None and method is None:
+        if p_value is None and method is None:
             st.warning("Insira pelo menos duas das variáveis (V, I, R) para calcular a potência automaticamente.")
-        elif P_value is None and method is not None:
+        elif p_value is None and method is not None:
             st.error(f"Não foi possível calcular: {method}")
         else:
-            st.success(f"Potência calculada: {P_value:.6g} W")
+            st.success(f"Potência calculada: {p_value:.6g} W")
             st.caption(f"Usando a fórmula: {method}")
 
     # Botão para voltar à página principal
