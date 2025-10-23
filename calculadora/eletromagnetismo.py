@@ -23,7 +23,7 @@ def compute_power(v, i, r):
     Retorna (P_value, method) onde method descreve a fórmula usada.
     Se não for possível calcular, retorna (None, None).
     """
-    # V, I, R podem ser None ou float
+    # v, i, r podem ser None ou float
     if v is not None and i is not None:
         return calc_power_from_v_i(v, i), "P = V × I"
     if i is not None and r is not None:
