@@ -17,22 +17,22 @@ def calc_power_from_v_r(v: float, r: float) -> float:
     return (v ** 2) / r
 
 
-def compute_power(V, I, R):
+def compute_power(v, i, r):
     """
     Determina a potência com base nas variáveis disponíveis.
     Retorna (P_value, method) onde method descreve a fórmula usada.
     Se não for possível calcular, retorna (None, None).
     """
     # V, I, R podem ser None ou float
-    if V is not None and I is not None:
-        return calc_power_from_v_i(V, I), "P = V × I"
-    if I is not None and R is not None:
-        return calc_power_from_i_r(I, R), "P = I² × R"
-    if V is not None and R is not None:
+    if v is not None and i is not None:
+        return calc_power_from_v_i(v, i), "P = V × I"
+    if i is not None and r is not None:
+        return calc_power_from_i_r(i, r), "P = I² × R"
+    if v is not None and r is not None:
         # evitar divisão por zero
-        if R == 0:
+        if r == 0:
             return None, "R não pode ser zero na fórmula P = V² / R"
-        return calc_power_from_v_r(V, R), "P = V² / R"
+        return calc_power_from_v_r(v, r), "P = V² / R"
     return None, None
 
 
